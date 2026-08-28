@@ -1,0 +1,17 @@
+# dependencies
+/node_modules
+
+# Next.js build output
+/.next
+/out
+
+# test outputs
+/coverage
+/playwright-report
+/test-results
+
+# local environment files
+/.env*
+
+# TypeScript cache
+*.tsbuildinfo
