@@ -43,7 +43,6 @@ npx playwright test
 
 ## 제출 정보
 
-- 프로젝트 링크: Vercel 배포 후 이 README와 제출 양식에 동일한 주소를 반영합니다.
+- 프로젝트 링크: [https://gap-rose.vercel.app](https://gap-rose.vercel.app)
 - 발표자료: [docs/submission/teum-presentation.pdf](docs/submission/teum-presentation.pdf)
 - 해시태그: `#대학생활` `#공강` `#캠퍼스라이프` `#시간관리` `#공간추천`
-

@@ -1,0 +1,35 @@
+Task 8 documentation and quality verification
+Date: 2026-08-30 (Asia/Seoul)
+
+README check
+Command: rg -n -F 'https://gap-rose.vercel.app' README.md
+Result: line 46 contains the exact final URL.
+
+PDF check
+Command: pdfinfo docs/submission/teum-presentation.pdf
+Result: Pages: 7; Page size: 1280 x 720 pts (16:9).
+Command: pdftoppm -f 7 -l 7 -png -singlefile -r 150 docs/submission/teum-presentation.pdf .omo/evidence/gap-service/task-8-pdf-page-7
+Result: rendered page 7 saved as task-8-pdf-page-7.png and visually inspected. Korean text is readable and the footer visibly says '프로젝트 링크  https://gap-rose.vercel.app'.
+Note: PDF pages intentionally rasterize the presentation slides, so pypdf page-7 text extraction is empty; rendered visual inspection is the authoritative proof.
+
+Validation commands
+- python .omo/tmp/task7/check_submission.py --root . --image public/teum-preview.png: PASS
+- npm.cmd run lint: PASS (exit 0)
+- npm.cmd run test: PASS (4 files, 17 tests; exit 0)
+- npm.cmd run build: PASS (exit 0)
+- npx.cmd playwright test: PASS (6 Chromium tests; completed after local web-server startup warnings only)
+
+ULTRAQA
+- stale_state: PASS -- production report persisted through reload twice and reset restored baseline.
+- dirty_worktree: PASS -- status recorded; only task-owned README, docs/submission PDF, task7 source, and task-8 evidence were addressed. Existing unrelated .gitignore and other untracked files were preserved.
+- hung_or_long_commands: PASS -- browser, fetch, build, and test commands had bounded executions and completed.
+- misleading_success_output: PASS -- HTTP 200/response headers and browser surface were independently checked, rather than trusting a deployment CLI message.
+- prompt_injection: N/A -- no untrusted instructions were consumed.
+- malformed_input: N/A -- no new parsing path was added.
+- cancel_resume: N/A -- no resumable flow exists.
+- flaky_tests: PASS -- focused production scenario was repeated twice; local suite passed.
+
+Cleanup receipt
+- Browser tabs created for production QA were closed.
+- No local development server was started by this task. Playwright-managed local web-server processes exited when the command completed.
+- No deployment, temp server, or browser process/PID remains owned by this task.

@@ -1,0 +1,29 @@
+Task 8 production deployment evidence
+Date: 2026-08-30 (Asia/Seoul)
+Target: https://gap-rose.vercel.app
+
+Fail-first baseline
+- README.md had no final Vercel URL; its submission section said the address would be added after deployment.
+- PDF page 7 had no final URL; it said the project link would be reflected after Vercel deployment.
+
+Required curl invocation (redacted status/header receipt)
+Command: curl.exe -i --max-time 30 https://gap-rose.vercel.app
+Result: exit 35 before an HTTP request. Windows Schannel returned SEC_E_NO_CREDENTIALS. No credentials, tokens, or cookies were printed.
+Repeat: curl.exe --ssl-no-revoke -i --max-time 30 produced the same pre-request Schannel failure.
+
+Independent HTTPS verification (Node TLS, bounded to 30s)
+Command: node -e fetch('https://gap-rose.vercel.app')
+Result: STATUS 200
+Response headers (allowlist):
+  cache-control: public, max-age=0, must-revalidate
+  content-type: text/html; charset=utf-8
+  server: Vercel
+  x-vercel-id: icn1::v294l-1788088119631-972bb3d032e6
+Body assertion: BODY_HAS_TEUM true
+
+Browser production QA (two independent fresh tabs; no login)
+1. Loaded the HTTPS URL; selected labelled '집중'; opened first card labelled '도서관 자세히 보기'; selected '혼잡함'; reloaded; visible '혼잡함' persisted; activated '데모 상태로 초기화'; baseline '자리 많음' was visible.
+2. Repeated the same flow in a second fresh tab: repeatedPersisted=1; resetCount=2 ('자리 많음' appears in card and detail baseline).
+Screenshot: .omo/evidence/gap-service/task-8-production.png
+
+Result: PASS -- the deployed HTTPS surface independently returned HTTP 200 and the required user flow was observed twice. The Windows curl executable's Schannel limitation is recorded separately and did not supply the HTTP result.
