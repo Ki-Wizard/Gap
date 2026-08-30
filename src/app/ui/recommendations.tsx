@@ -54,6 +54,7 @@ export function Recommendations({
   onResetReport,
 }: RecommendationsProps): React.ReactElement {
   const selected = rankedPlaces.find(({ place }) => place.id === selectedPlaceId) ?? null;
+  const selectedReport = selected === null ? null : reportFor(reports, selected.place.id);
 
   return (
     <section className="recommendations" aria-label="공강 추천">
@@ -141,14 +142,14 @@ export function Recommendations({
                       id={`crowd-${selected.place.id}-${level}`}
                       type="radio"
                       name={`crowd-${selected.place.id}`}
-                      checked={selected.place.crowdLevel === level}
+                      checked={(selectedReport?.crowdLevel ?? selected.place.crowdLevel) === level}
                       onChange={() => onReport(selected.place.id, level)}
                     />
                     <span>{CROWD_LABELS[level]}</span>
                   </label>
                 ))}
               </div>
-              {reportFor(reports, selected.place.id) === null ? null : (
+              {selectedReport === null ? null : (
                 <div className="report-confirmation">
                   <span role="status">이 기기의 제보로 저장했어요.</span>
                   <button type="button" onClick={() => onResetReport(selected.place.id)}>제보 초기화</button>

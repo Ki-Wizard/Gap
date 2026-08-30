@@ -100,6 +100,23 @@ describe("local app state", () => {
     expect(result.notice).not.toBeNull();
   });
 
+  it("rejects persisted reports with an unsupported crowd level", () => {
+    // Given: an otherwise complete persisted state containing a malformed report
+    const storage = createMemoryStorage(
+      JSON.stringify({
+        ...createSeedState(),
+        reports: [{ placeId: "library", crowdLevel: "unknown", reportedAt: "2026-08-30T12:05:00.000Z" }],
+      }),
+    );
+
+    // When: the external stored report is parsed
+    const result = loadAppState(storage);
+
+    // Then: invalid reports cannot change the safe demo baseline
+    expect(result.state).toEqual(createSeedState());
+    expect(result.notice).not.toBeNull();
+  });
+
   it("removes persisted state and restores editable demo defaults", () => {
     // Given: a storage adapter containing app state
     const storage = createMemoryStorage("persisted");
