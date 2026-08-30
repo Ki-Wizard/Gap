@@ -39,7 +39,7 @@ export const CAMPUS_PLACES = [
     purposes: ["focus", "rest", "team"],
     amenities: ["power", "conversation", "group-table"],
     crowdLevel: "available",
-    recommendationBlurb: "다음 수업 건물에서 이동 걱정 없이 시간을 쓸 수 있어요.",
+    recommendationBlurb: "다음 수업 건물과 가까워 편해요.",
   },
   {
     id: "central-plaza",

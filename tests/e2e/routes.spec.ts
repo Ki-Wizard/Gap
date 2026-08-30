@@ -54,6 +54,35 @@ test("student gets a focused recommendation and keeps a local crowd report", asy
   await expect(resetLibrary).not.toContainText("이 기기의 제보");
 });
 
+test("selected current building changes the recommendation route and restores deterministically", async ({ page }) => {
+  // Given: the fresh focus demo is anchored at the library
+  const buildingPicker = page.getByRole("combobox", { name: "지금 어디에 있나요?" });
+  await buildingPicker.selectOption("도서관");
+  const firstRecommendation = page.getByTestId("recommendation-card").first();
+  await expect(firstRecommendation).toContainText("도서관");
+  await expect(firstRecommendation).toContainText("걸어서 약 2분");
+
+  // When: the student changes the selected current building to engineering
+  await buildingPicker.selectOption("공학관");
+
+  // Then: the curated route and walking time are recomputed from that building
+  await expect(firstRecommendation).toContainText("공학관 라운지");
+  await expect(firstRecommendation).toContainText("걸어서 약 0분");
+  await firstRecommendation.getByRole("button", { name: /자세히 보기/ }).click();
+  await expect(page.getByRole("dialog", { name: "공학관 라운지 상세" })).toContainText(
+    "공학관 → 공학관 라운지 → 공학관",
+  );
+  await page.screenshot({ path: resolve(EVIDENCE_DIR, "task-9-current-building.png") });
+  await page.getByRole("button", { name: "상세 닫기" }).click();
+
+  // When: the student switches back to the library
+  await buildingPicker.selectOption("도서관");
+
+  // Then: the original deterministic recommendation and walk time return
+  await expect(firstRecommendation).toContainText("도서관");
+  await expect(firstRecommendation).toContainText("걸어서 약 2분");
+});
+
 test("student can remove future classes and recover the demo", async ({ page }) => {
   // Given: the seeded timetable has one future class
   const timetable = page.getByRole("region", { name: "내 시간표" });

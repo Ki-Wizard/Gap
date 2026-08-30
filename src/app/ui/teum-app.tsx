@@ -85,7 +85,11 @@ export function TeumApp(): React.ReactElement {
     : calculateMinutesRemaining(SAMPLE_CONTEXT.currentTime, nextClass.startsAt);
   const rankedPlaces = minutesRemaining === null
     ? []
-    : rankPlaces(withLocalReports(appState), { purpose, minutesRemaining });
+    : rankPlaces(withLocalReports(appState), {
+      purpose,
+      minutesRemaining,
+      currentBuilding: appState.currentBuilding,
+    });
 
   function persist(nextState: AppState): void {
     setAppState(nextState);

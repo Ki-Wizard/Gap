@@ -8,6 +8,7 @@ import {
   rankPlaces,
 } from "../../src/domain/recommendation";
 import type { CampusPlace } from "../../src/domain/types";
+import type { Building } from "../../src/domain/types";
 
 describe("gap-time recommendation", () => {
   it("ranks 도서관 first for the 12:05 focus demo", () => {
@@ -93,5 +94,26 @@ describe("gap-time recommendation", () => {
 
     // Then: the deterministic gap is returned
     expect(remaining).toBe(55);
+  });
+
+  it("changes focus ranking when the selected current building changes", () => {
+    // Given: the same purpose and gap, anchored at two curated campus buildings
+    const libraryContext = {
+      purpose: "focus",
+      minutesRemaining: 55,
+      currentBuilding: "도서관",
+    } satisfies { readonly purpose: "focus"; readonly minutesRemaining: number; readonly currentBuilding: Building };
+    const engineeringContext = {
+      purpose: "focus",
+      minutesRemaining: 55,
+      currentBuilding: "공학관",
+    } satisfies { readonly purpose: "focus"; readonly minutesRemaining: number; readonly currentBuilding: Building };
+
+    // When: recommendations are ranked from each selected building
+    const fromLibrary = rankPlaces(CAMPUS_PLACES, libraryContext);
+    const fromEngineering = rankPlaces(CAMPUS_PLACES, engineeringContext);
+
+    // Then: curated map geometry changes the deterministic first recommendation
+    expect(fromLibrary[0]?.place.id).not.toBe(fromEngineering[0]?.place.id);
   });
 });

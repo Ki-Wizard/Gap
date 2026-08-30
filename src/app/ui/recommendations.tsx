@@ -81,7 +81,7 @@ export function Recommendations({
                 </div>
                 <p className="reason">{ranked.reason}</p>
                 <div className="card-meta">
-                  <span><Icon name="location" size={16} /> 걸어서 약 {place.walkMinutes}분</span>
+                  <span><Icon name="location" size={16} /> 걸어서 약 {ranked.walkMinutes}분</span>
                   <span><Icon name="clock" size={16} /> 머물 시간 {ranked.usableMinutes}분</span>
                 </div>
                 <div className="amenity-list" aria-label="편의 시설">
@@ -128,7 +128,7 @@ export function Recommendations({
             <div className="route-summary">
               <p><Icon name="location" size={18} /> 추천 이동 흐름</p>
               <strong>{currentBuilding} → {selected.place.name} → {nextBuilding}</strong>
-              <span>추천 장소까지 걸어서 약 {selected.place.walkMinutes}분 · 실제 이동 시간은 달라질 수 있어요.</span>
+              <span>도보 약 {selected.walkMinutes}분 · 실제 시간은 달라질 수 있어요.</span>
             </div>
 
             <fieldset className="report-control">
